@@ -60,7 +60,7 @@ Installing the following Python libraries will add optional functionality:
 * Genshi_ (XML-based templating language)
 * Mako_ (text-based templating language)
 * Paramiko_ (Remote node control using SSH)
-* GitPython_ (Version controlling the repository with Git)
+* Dulwich_ (Version controlling the repository with Git)
 * Boto_ (`Amazon EC2`_ virtual machine provisioning)
 * pyvsphere_ (VMWare virtual machine provisioning)
 * libvirt-python_ (libvirt virtual machine provisioning)
@@ -72,7 +72,7 @@ Installing the following Python libraries will add optional functionality:
 .. _Boto: http://pypi.python.org/pypi/boto
 .. _`path.py`: http://pypi.python.org/pypi/path.py
 .. _Argh: http://pypi.python.org/pypi/argh
-.. _GitPython: http://pypi.python.org/pypi/GitPython
+.. _Dulwich: http://www.samba.org/~jelmer/dulwich/
 .. _Cheetah: http://pypi.python.org/pypi/Cheetah
 .. _Mako: http://www.makotemplates.org/
 .. _Genshi: http://pypi.python.org/pypi/Genshi

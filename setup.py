@@ -15,7 +15,7 @@ long_desc = file("%s/README.rst" % new_dir).read()
 depends = [
     "path.py>=2.2.2",
     "paramiko>=1.7.6",
-    "GitPython>=0.3.1",
+    "dulwich>=0.6",
     "argh>=0.13",
     ]
 
