@@ -13,8 +13,8 @@ import re
 
 try:
     import Cheetah.Template
-    from Cheetah.Template import Template as CheetahTemplate
-
+    if not hasattr(Cheetah.Template, "_genUniqueModuleName"):
+        raise ImportError  # try yelp_cheetah below
     import random
     import sys
 
@@ -33,8 +33,23 @@ try:
         else:
             return 'cheetah_%s_%x' % (baseModuleName, random.getrandbits(128))
     Cheetah.Template._genUniqueModuleName = _patched_genUniqueModuleName
+    CheetahTemplate = Cheetah.Template.Template
+    CheetahTemplateError = Cheetah.Template.Error
 except ImportError:
-    CheetahTemplate = None
+    try:
+        from Cheetah.compile import compile_to_class
+
+        def CheetahTemplate(source=None, file=None, searchList=None):
+            if file is not None:
+                with open(file) as fp:
+                    source = file.read()
+            if isinstance(source, str):
+                source = source.decode("utf-8")
+            return compile_to_class(source)(searchList=searchList)
+
+        CheetahTemplateError = ValueError
+    except ImportError:
+        CheetahTemplate = None
 
 try:
     from mako.template import Template as MakoTemplate
@@ -80,8 +95,8 @@ def render_name(source_text, source_path, vars):
 def render_cheetah(source_text, source_path, vars):
     assert CheetahTemplate, "Cheetah is not installed"
     try:
-        return str(CheetahTemplate(source=source_text, file=source_path, searchList=[vars]))
-    except (Cheetah.Template.Error, SyntaxError, Cheetah.NameMapper.NotFound) as error:
+        return CheetahTemplate(source=source_text, file=source_path, searchList=[vars]).respond()
+    except (SyntaxError, CheetahTemplateError, Cheetah.NameMapper.NotFound) as error:
         raise errors.TemplateError("{0}: {1}: {2}".format(source_path, error.__class__.__name__, error))
 
 
